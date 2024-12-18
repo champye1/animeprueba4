@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block banner-img %}
+{% static 'core/img/portada.jpg' %}
+{% endblock %}
+
+{% block banner-txt %}
+<h1>Contacto</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h3 class="text-center mb-4">Formulario de Contacto</h3>
+            {% if 'ok' in request.GET %}
+                <div class="alert alert-success">
+                    <strong>Su mensaje se ha enviado correctamente.</strong>
+                </div>
+            {% endif %}
+            {% if 'error' in request.GET %}
+                <div class="alert alert-danger">
+                    <strong>Su mensaje no ha podido ser enviado. Por favor intente más tarde.</strong>
+                </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+                <div class="mb-3">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+                <div class="mb-3">
+                    {{ form.message.label_tag }}
+                    {{ form.message }}
+                </div>
+                <div class="text-center">
+                    <input type="submit" class="btn btn-primary btn-block" value="Enviar mensaje">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

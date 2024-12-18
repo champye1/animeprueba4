@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block banner-img %}
+{% static 'core/img/eleccion.jpg' %}
+{% endblock %}
+{% block banner-txt %}
+<h1>Galeria personajes League of</h1>
+<span class="subheading">Te presentamos una lista de nuestra coleccion personal</span>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Galeria</h1>
+    <div class="row">
+    {% for galeria in page_obj %}
+        
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ galeria.imagen.url }}" class="card-img-top" style="width: 200px; height: 150px; object-fit: cover;" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ galeria.title }}</h5>
+                      <p class="card-text">{{ galeria.description }}</p>
+                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div>
+            </div>
+            
+    {% endfor %}
+    </div>  
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+        {% endif %}
+
+    </ul>
+    </nav>
+    
+    
+
+</div>
+    <!-- Main Content-->
+    
+    
+    <!-- Footer-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    {% endblock %}

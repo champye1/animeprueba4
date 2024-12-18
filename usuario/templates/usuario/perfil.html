@@ -1,0 +1,135 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block banner-img %}
+{% static 'core/img/swain.jpg' %}
+{% endblock %}
+
+{% block banner-txt %}
+<h1>Perfil</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    {% if user.perfil.avatar %}
+                        <img src="{{ user.perfil.avatar.url }}" class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                        <img src="{% static 'core/img/default_avatar.png' %}" class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% endif %}
+                    <h5 class="card-title">{{ user.username }}</h5>
+                    <p class="text-muted">{{ user.email }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Información del Perfil</h3>
+                    <form method="POST" enctype="multipart/form-data" class="profile-form">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 me-2">
+                                    <label for="username" class="form-label">Nombre de usuario</label>
+                                    {{ u_form.username }}
+                                </div>
+                                <button type="button" class="btn btn-primary btn-edit" onclick="toggleEdit('username')">
+                                    <i class="fas fa-edit"></i> EDITAR
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 me-2">
+                                    <label for="email" class="form-label">Correo electrónico</label>
+                                    {{ u_form.email }}
+                                </div>
+                                <button type="button" class="btn btn-primary btn-edit" onclick="toggleEdit('email')">
+                                    <i class="fas fa-edit"></i> EDITAR
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 me-2">
+                                    <label for="biografia" class="form-label">Biografía</label>
+                                    {{ p_form.biografia }}
+                                </div>
+                                <button type="button" class="btn btn-primary btn-edit" onclick="toggleEdit('biografia')">
+                                    <i class="fas fa-edit"></i> EDITAR
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 me-2">
+                                    <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
+                                    <input type="date" 
+                                           class="form-control" 
+                                           id="fecha_nacimiento" 
+                                           name="fecha_nacimiento"
+                                           value="{{ user.perfil.fecha_nacimiento|date:'Y-m-d' }}"
+                                           max="{{ current_date }}"
+                                           readonly>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-edit" onclick="toggleEdit('fecha_nacimiento')">
+                                    <i class="fas fa-edit"></i> EDITAR
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 me-2">
+                                    <label for="avatar" class="form-label">Avatar</label>
+                                    {{ p_form.avatar }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleEdit(fieldId) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+        field.readOnly = !field.readOnly;
+        if (!field.readOnly && fieldId === 'fecha_nacimiento') {
+            const hoy = new Date().toISOString().split('T')[0];
+            field.max = hoy;
+            field.addEventListener('change', function() {
+                if (this.value > hoy) {
+                    alert('La fecha de nacimiento no puede ser una fecha futura');
+                    this.value = '';
+                }
+            });
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fechaInput = document.getElementById('fecha_nacimiento');
+    if (fechaInput) {
+        const hoy = new Date().toISOString().split('T')[0];
+        fechaInput.max = hoy;
+    }
+});
+</script>
+{% endblock %} 

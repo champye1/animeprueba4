@@ -1,0 +1,32 @@
+.content-text {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.header-section {
+    background-image: url('../images/tu-imagen-de-fondo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-align: center;
+} 

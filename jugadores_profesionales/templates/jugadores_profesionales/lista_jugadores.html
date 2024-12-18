@@ -1,0 +1,111 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block banner-img %}
+{% static 'core/img/proplayers.jpg' %}
+{% endblock %}
+
+{% block banner-txt %}
+<h1>Jugadores Profesionales</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Formulario de filtros -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Filtros</h5>
+                    <form method="get">
+                        <div class="mb-3">
+                            <label for="{{ form.ciudad.id_for_label }}" class="form-label">Ciudad:</label>
+                            <input type="text" name="ciudad" class="form-control" id="{{ form.ciudad.id_for_label }}" value="{{ form.ciudad.value|default:'' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.equipo.id_for_label }}" class="form-label">Equipo:</label>
+                            <select name="equipo" class="form-control" id="{{ form.equipo.id_for_label }}">
+                                <option value="">Todos los equipos</option>
+                                {% for equipo in form.fields.equipo.queryset %}
+                                    <option value="{{ equipo.id }}" {% if form.equipo.value|stringformat:"s" == equipo.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ equipo.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.campeonato.id_for_label }}" class="form-label">Campeonato:</label>
+                            <select name="campeonato" class="form-control" id="{{ form.campeonato.id_for_label }}">
+                                <option value="">Todos los campeonatos</option>
+                                {% for campeonato in form.fields.campeonato.queryset %}
+                                    <option value="{{ campeonato.id }}" {% if form.campeonato.value|stringformat:"s" == campeonato.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ campeonato.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de jugadores -->
+        <div class="col-md-9">
+            <div class="row">
+                {% for jugador in jugadores %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ jugador.nombre }} {{ jugador.apellido }}</h5>
+                            <p class="card-text">
+                                <strong>Ciudad:</strong> {{ jugador.ciudad_nacimiento }}<br>
+                                <strong>Equipo:</strong> {{ jugador.equipo }}<br>
+                                <strong>Campeonato:</strong> {{ jugador.campeonato }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        No se encontraron jugadores con los filtros seleccionados.
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% if jugadores.paginator.num_pages > 1 %}
+            <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Navegación de páginas">
+                    <ul class="pagination">
+                        {% if jugadores.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if request.GET.ciudad %}&ciudad={{ request.GET.ciudad }}{% endif %}{% if request.GET.equipo %}&equipo={{ request.GET.equipo }}{% endif %}{% if request.GET.campeonato %}&campeonato={{ request.GET.campeonato }}{% endif %}">&laquo; Primera</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ jugadores.previous_page_number }}{% if request.GET.ciudad %}&ciudad={{ request.GET.ciudad }}{% endif %}{% if request.GET.equipo %}&equipo={{ request.GET.equipo }}{% endif %}{% if request.GET.campeonato %}&campeonato={{ request.GET.campeonato }}{% endif %}">Anterior</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <span class="page-link">
+                                Página {{ jugadores.number }} de {{ jugadores.paginator.num_pages }}
+                            </span>
+                        </li>
+
+                        {% if jugadores.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ jugadores.next_page_number }}{% if request.GET.ciudad %}&ciudad={{ request.GET.ciudad }}{% endif %}{% if request.GET.equipo %}&equipo={{ request.GET.equipo }}{% endif %}{% if request.GET.campeonato %}&campeonato={{ request.GET.campeonato }}{% endif %}">Siguiente</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ jugadores.paginator.num_pages }}{% if request.GET.ciudad %}&ciudad={{ request.GET.ciudad }}{% endif %}{% if request.GET.equipo %}&equipo={{ request.GET.equipo }}{% endif %}{% if request.GET.campeonato %}&campeonato={{ request.GET.campeonato }}{% endif %}">Última &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
