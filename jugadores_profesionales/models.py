@@ -17,11 +17,14 @@ class Campeonato(models.Model):
 
 class JugadorProfesional(models.Model):
     nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-    ciudad_nacimiento = models.CharField(max_length=100)
-    fecha_nacimiento = models.DateField()
-    equipo = models.ForeignKey(Equipo, on_delete=models.CASCADE)
-    campeonato = models.ForeignKey(Campeonato, on_delete=models.CASCADE)
-    
+    nickname = models.CharField(max_length=50)
+    equipo = models.CharField(max_length=100)
+    rol = models.CharField(max_length=50)
+    # Añade más campos según necesites
+
+    class Meta:
+        verbose_name = "Jugador Profesional"
+        verbose_name_plural = "Jugadores Profesionales"
+
     def __str__(self):
-        return f"{self.nombre} {self.apellido}"
+        return f"{self.nickname} - {self.equipo}"

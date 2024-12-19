@@ -13,6 +13,6 @@ class CampeonatoAdmin(admin.ModelAdmin):
 
 @admin.register(JugadorProfesional)
 class JugadorProfesionalAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'apellido', 'ciudad_nacimiento', 'equipo', 'campeonato')
-    list_filter = ('equipo', 'campeonato', 'ciudad_nacimiento')
-    search_fields = ('nombre', 'apellido', 'ciudad_nacimiento')
+    list_display = ['nickname', 'nombre', 'equipo', 'rol']
+    search_fields = ['nickname', 'nombre', 'equipo']
+    list_filter = ['equipo', 'rol']
