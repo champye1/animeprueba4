@@ -15,7 +15,11 @@
         
             <div class="col">
                 <div class="card" style="width: 18rem;">
-                    <img src="{{ galeria.imagen.url }}" class="card-img-top" style="width: 200px; height: 150px; object-fit: cover;" alt="...">
+                    {% if galeria.imagen %}
+                        <img src="{{ galeria.imagen.url }}" class="card-img-top" style="width: 200px; height: 150px; object-fit: cover;" alt="{{ galeria.title }}">
+                    {% else %}
+                        <img src="{% static 'path/to/default/image.jpg' %}" class="card-img-top" style="width: 200px; height: 150px; object-fit: cover;" alt="Imagen no disponible">
+                    {% endif %}
                     <div class="card-body">
                       <h5 class="card-title">{{ galeria.title }}</h5>
                       <p class="card-text">{{ galeria.description }}</p>

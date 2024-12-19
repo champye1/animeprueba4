@@ -1,15 +1,35 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from .models import Perfil
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
+    grupo = forms.ModelChoiceField(
+        queryset=Group.objects.filter(name='Editorlol'),
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'placeholder': 'Seleccione el grupo'
+        }),
+        label='Grupo de Usuario',
+        initial=None
+    )
     
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2', 'grupo']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_staff = True  # Permitir acceso al admin
+        if commit:
+            user.save()
+            grupo = self.cleaned_data.get('grupo')
+            if grupo:
+                grupo.user_set.add(user)  # Asignar el usuario al grupo
+        return user
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()

@@ -1,14 +1,14 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from jugadores_profesionales.models import JugadorProfesional  # Ajusta según tu modelo
+from jugadores_profesionales.models import JugadorProfesional
 
 class Command(BaseCommand):
     help = 'Crear grupo de editores con permisos CRUD para jugadores profesionales'
 
     def handle(self, *args, **kwargs):
         # Crear grupo de editores
-        grupo_editores, created = Group.objects.get_or_create(name='Editores_LoL')
+        grupo_editors, created = Group.objects.get_or_create(name='Editorlol')
 
         # Obtener content type del modelo JugadorProfesional
         content_type = ContentType.objects.get_for_model(JugadorProfesional)
@@ -25,10 +25,10 @@ class Command(BaseCommand):
         )
         
         for permiso in permisos:
-            grupo_editores.permissions.add(permiso)
+            grupo_editors.permissions.add(permiso)
 
         self.stdout.write(
             self.style.SUCCESS(
-                'Grupo Editores_LoL creado/actualizado con permisos CRUD para jugadores profesionales'
+                'Grupo Editorlol creado/actualizado con permisos CRUD para jugadores profesionales'
             )
         ) 

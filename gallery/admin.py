@@ -1,8 +1,9 @@
 from django.contrib import admin
 from .models import Galeria
 
-# Register your models here.
-
-admin.site.register(Galeria)
+@admin.register(Galeria)
+class GaleriaAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'fecha_estreno')
+    search_fields = ('title', 'author')
 
 
