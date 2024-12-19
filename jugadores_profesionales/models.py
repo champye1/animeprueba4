@@ -20,7 +20,6 @@ class JugadorProfesional(models.Model):
     nickname = models.CharField(max_length=50)
     equipo = models.CharField(max_length=100)
     rol = models.CharField(max_length=50)
-    # Añade más campos según necesites
 
     class Meta:
         verbose_name = "Jugador Profesional"
